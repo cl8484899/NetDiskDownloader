@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+ <ItemGroup Label="ProjectConfigurations">
+  <ProjectConfiguration Include="Debug|Win32"><Configuration>Debug</Configuration><Platform>Win32</Platform></ProjectConfiguration>
+  <ProjectConfiguration Include="Release|Win32"><Configuration>Release</Configuration><Platform>Win32</Platform></ProjectConfiguration>
+ </ItemGroup>
+ <PropertyGroup Label="Globals"><VCProjectVersion>17.0</VCProjectVersion><Keyword>Win32Proj</Keyword><ProjectGuid>{8D8C10D2-0D88-4A9B-A8D7-0A89C6E11C01}</ProjectGuid><RootNamespace>NetDiskDownloader</RootNamespace><WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion></PropertyGroup>
+ <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+ <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration"><ConfigurationType>Application</ConfigurationType><UseDebugLibraries>true</UseDebugLibraries><PlatformToolset>v143</PlatformToolset><CharacterSet>Unicode</CharacterSet></PropertyGroup>
+ <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration"><ConfigurationType>Application</ConfigurationType><UseDebugLibraries>false</UseDebugLibraries><PlatformToolset>v143</PlatformToolset><CharacterSet>Unicode</CharacterSet><WholeProgramOptimization>true</WholeProgramOptimization></PropertyGroup>
+ <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
+ <ItemDefinitionGroup>
+  <ClCompile><WarningLevel>Level4</WarningLevel><SDLCheck>true</SDLCheck><PreprocessorDefinitions>WIN32;_WINDOWS;WINVER=0x0601;_WIN32_WINNT=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions><LanguageStandard>stdcpp17</LanguageStandard><AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions><RuntimeLibrary Condition="'$(Configuration)'=='Release'">MultiThreaded</RuntimeLibrary></ClCompile>
+  <Link><SubSystem>Windows</SubSystem><AdditionalDependencies>winhttp.lib;comctl32.lib;shell32.lib;ole32.lib;%(AdditionalDependencies)</AdditionalDependencies></Link>
+ </ItemDefinitionGroup>
+ <ItemGroup><ResourceCompile Include="NetDiskDownloader.rc"/><ClCompile Include="src\main.cpp"/><ClCompile Include="src\ui\MainWindow.cpp"/><ClCompile Include="src\client\ApiClient.cpp"/><ClCompile Include="src\client\HttpDownloader.cpp"/><ClCompile Include="src\service\DownloadService.cpp"/><ClCompile Include="src\util\JsonParser.cpp"/><ClCompile Include="src\util\FileUtil.cpp"/><ClCompile Include="src\util\FormatUtil.cpp"/></ItemGroup>
+ <ItemGroup><ClInclude Include="src\ui\MainWindow.h"/><ClInclude Include="src\client\ApiClient.h"/><ClInclude Include="src\client\HttpDownloader.h"/><ClInclude Include="src\service\DownloadService.h"/><ClInclude Include="src\model\DownloadInfo.h"/><ClInclude Include="src\model\DownloadProgress.h"/><ClInclude Include="src\util\JsonParser.h"/><ClInclude Include="src\util\FileUtil.h"/><ClInclude Include="src\util\FormatUtil.h"/></ItemGroup>
+ <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+</Project>
