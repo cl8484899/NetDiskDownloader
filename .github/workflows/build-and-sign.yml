@@ -1,0 +1,63 @@
+name: Build and sign Windows EXE
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build-and-sign:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build Release Win32
+        run: msbuild NetDiskDownloader.sln /m /p:Configuration=Release /p:Platform=Win32 /p:RestorePackages=false
+
+      - name: Verify build output exists
+        shell: pwsh
+        run: |
+          $exe = "NetDiskDownloader/Release/NetDiskDownloader.exe"
+          if (!(Test-Path $exe)) {
+            Get-ChildItem -Recurse -Filter NetDiskDownloader.exe | Select-Object FullName
+            throw "Build output not found: $exe"
+          }
+
+      - name: Upload unsigned EXE
+        id: upload-unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: NetDiskDownloader-unsigned
+          path: NetDiskDownloader/Release/NetDiskDownloader.exe
+          if-no-files-found: error
+
+      # Configure these values only after SignPath Foundation accepts the project
+      # and the GitHub trusted build system / project / signing policy are created.
+      - name: Submit to SignPath
+        id: sign
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: netdiskdownloader
+          signing-policy-slug: release-signing
+          github-artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+
+      - name: Upload signed EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: NetDiskDownloader-signed
+          path: signed/NetDiskDownloader.exe
+          if-no-files-found: error
