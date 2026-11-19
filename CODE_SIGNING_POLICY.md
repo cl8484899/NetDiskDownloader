@@ -3,8 +3,8 @@
 ## Project and signing scope
 
 - Project: NetDiskDownloader (网盘下载器)
-- Source repository: https://github.com/cl848489/NetDiskDownloader
-- Project owner and maintainer: GitHub user `cl848489`
+- Source repository: https://github.com/cl8484899/NetDiskDownloader
+- Project owner and maintainer: GitHub user `cl8484899`
 - Signed artifact: only `NetDiskDownloader.exe`, built from this public repository.
 - Release source: reviewed source committed to the `main` branch and corresponding GitHub Releases.
 - Third-party binaries and binaries built from unrelated or undisclosed source code will not be submitted for signing.
@@ -17,9 +17,9 @@ The client communicates with a separately operated backend service at `https://w
 
 ## Maintainer roles
 
-- Author / maintainer / repository owner: `cl848489`
-- Reviewer: `cl848489` for maintainer-authored changes; contributions from others must be reviewed before merging.
-- Signing approver: `cl848489`, responsible for confirming that a release is intended for publication and corresponds to reviewed source.
+- Author / maintainer / repository owner: `cl8484899`
+- Reviewer: `cl8484899` for maintainer-authored changes; contributions from others must be reviewed before merging.
+- Signing approver: `cl8484899`, responsible for confirming that a release is intended for publication and corresponds to reviewed source.
 
 All team members must enable multi-factor authentication on GitHub and SignPath. If additional maintainers are added, this policy will be updated to identify their roles.
 

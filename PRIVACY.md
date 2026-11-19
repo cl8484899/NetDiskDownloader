@@ -1,7 +1,7 @@
 # Privacy Policy
 
 **Project:** NetDiskDownloader (网盘下载器)  
-**Maintainer:** GitHub user `cl848489`  
+**Maintainer:** GitHub user `cl8484899`  
 **Backend API:** `https://www.fileora.cn/netdisk/getDownloadInfo`
 
 ## Information handled by the application
@@ -24,4 +24,4 @@ You can avoid sending a download code by not starting a download. The applicatio
 
 ## Contact and updates
 
-For questions or privacy concerns, please open an issue in the [GitHub repository](https://github.com/cl848489/NetDiskDownloader). This policy may be updated when the application's data handling or backend infrastructure changes.
+For questions or privacy concerns, please open an issue in the [GitHub repository](https://github.com/cl8484899/NetDiskDownloader). This policy may be updated when the application's data handling or backend infrastructure changes.
