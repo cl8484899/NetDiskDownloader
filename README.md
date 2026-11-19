@@ -2,7 +2,7 @@
 
 ## 功能
 - 原生 Win32 GUI：下载码输入、选择保存目录、开始下载、总进度、文件数、速度。
-- API：`GET http://localhost/netdisk/getDownloadInfo?downloadCode={downloadCode}`。
+- API：`GET https://www.fileora.cn/netdisk/getDownloadInfo?downloadCode={downloadCode}&pageNum={pageNum}&pageSize={pageSize}`。
 - 只接受业务 `code == 200`；读取 `data[]` 的 `filePath` 和 `downloadUrl`。
 - 按页下载；当文件总数超过 50 时，每页最多使用 5 个工作线程，否则使用 1 个线程。不支持断点续传。
 - 文件写入 `.download_tmp`，成功后再替换正式文件。
@@ -30,4 +30,4 @@ API 的 `filePath` 必须是相对路径；拒绝绝对路径、`..` 和 Windows
 
 代码签名准备说明见 [SIGNING.md](SIGNING.md)。项目没有内置证书或私钥；签名需在满足资格审核的代码签名服务中完成。不要将 PFX、私钥、密码或签名令牌提交到仓库。
 
-项目申请 SignPath Foundation 前，还需要在公开仓库中发布 [Code signing policy](CODE_SIGNING_POLICY.md)，并将其中的 `[YOUR_GITHUB_USERNAME]` 替换为实际 GitHub 用户名。该政策说明签名范围、维护者角色和应用联网行为。
+项目的签名范围、维护者角色和联网行为见 [Code signing policy](CODE_SIGNING_POLICY.md)。用户数据处理说明见 [隐私政策](PRIVACY.md)。项目依赖独立运营的远程商业后端 API；该后端不包含在客户端源码仓库中，也不随客户端 EXE 分发。
