@@ -31,7 +31,7 @@ jobs:
 
           msbuild NetDiskDownloader.sln /m `
             /p:Configuration=Release `
-            /p:Platform=Win32 `
+            /p:Platform=x86 `
             /p:RestorePackages=false `
             "/p:OutDir=$outDir\"
 
