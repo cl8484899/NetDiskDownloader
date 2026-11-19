@@ -1,3 +1,4 @@
+
 name: Build and sign Windows EXE
 
 on:
@@ -12,6 +13,7 @@ permissions:
 jobs:
   build-and-sign:
     runs-on: windows-latest
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -22,14 +24,29 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Build Release Win32
-        run: msbuild NetDiskDownloader.sln /m /p:Configuration=Release /p:Platform=Win32 /p:RestorePackages=false
+        shell: pwsh
+        run: |
+          $outDir = Join-Path $env:GITHUB_WORKSPACE "artifacts"
+          New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+
+          msbuild NetDiskDownloader.sln /m `
+            /p:Configuration=Release `
+            /p:Platform=Win32 `
+            /p:RestorePackages=false `
+            "/p:OutDir=$outDir\"
+
+          if ($LASTEXITCODE -ne 0) {
+            throw "MSBuild failed"
+          }
 
       - name: Verify build output exists
         shell: pwsh
         run: |
-          $exe = "NetDiskDownloader/Release/NetDiskDownloader.exe"
+          $exe = "artifacts/NetDiskDownloader.exe"
+
           if (!(Test-Path $exe)) {
-            Get-ChildItem -Recurse -Filter NetDiskDownloader.exe | Select-Object FullName
+            Get-ChildItem -Recurse -Filter NetDiskDownloader.exe |
+              Select-Object FullName
             throw "Build output not found: $exe"
           }
 
@@ -38,13 +55,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: NetDiskDownloader-unsigned
-          path: NetDiskDownloader/Release/NetDiskDownloader.exe
+          path: artifacts/NetDiskDownloader.exe
           if-no-files-found: error
 
-      # Configure these values only after SignPath Foundation accepts the project
-      # and the GitHub trusted build system / project / signing policy are created.
       - name: Submit to SignPath
         id: sign
+        if: ${{ vars.SIGNPATH_ENABLED == 'true' }}
         uses: signpath/github-action-submit-signing-request@v3
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
@@ -55,7 +71,27 @@ jobs:
           wait-for-completion: true
           output-artifact-directory: signed
 
+      - name: Verify signed EXE
+        if: ${{ vars.SIGNPATH_ENABLED == 'true' }}
+        shell: pwsh
+        run: |
+          $exe = "signed/NetDiskDownloader.exe"
+
+          if (!(Test-Path $exe)) {
+            Get-ChildItem signed -Recurse
+            throw "Signed EXE not found"
+          }
+
+          $signature = Get-AuthenticodeSignature $exe
+
+          if ($signature.Status -ne "Valid") {
+            throw "Invalid signature: $($signature.Status)"
+          }
+
+          Write-Host "Signer: $($signature.SignerCertificate.Subject)"
+
       - name: Upload signed EXE
+        if: ${{ vars.SIGNPATH_ENABLED == 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: NetDiskDownloader-signed
